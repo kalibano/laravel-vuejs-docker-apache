@@ -18,6 +18,9 @@ class TaskTest extends TestCase
             'name' => 'abcd',
             'status' => 'completed'
         ]);
+
+        $json = json_decode($response->getContent(), true);
+        dd($json);
         $this->assertDatabaseHas('tasks', ['name' => 'abcd']);
     }
 
@@ -38,14 +41,14 @@ class TaskTest extends TestCase
             ]
         ]]);
     }
-    
+
     public function test_delete_task_list()
     {
         $response = Task::create([
             'name' => 'testing',
             'status' => 'pending'
         ]);
- 
+
         $this->postJson('api/task/delete-task', ['id' =>  $response->id]);
 
         $this->assertDatabaseMissing('tasks', ['id' => $response->id]);
